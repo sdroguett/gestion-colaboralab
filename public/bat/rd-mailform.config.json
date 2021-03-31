@@ -1,0 +1,8 @@
+{
+  "useSmtp": true,
+  "host": "mail.colaboralab.cl ",
+  "port": 465,
+  "username": "contacto@colaboralab.cl",
+  "password": "K6&YL.7@fh4#",
+  "recipientEmail": "contacto@colaboralab.cl"
+}

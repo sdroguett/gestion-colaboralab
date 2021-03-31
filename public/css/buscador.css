@@ -1,0 +1,36 @@
+.item {
+    border: 1px solid #eee;
+    padding: 10px 10px 20px 10px;
+    margin: 10px auto;
+    box-shadow: 2px 2px 3px #DADADA;
+    font-family: sans-serif;
+    width:30%;
+}
+.item div{
+  display: inline-block;
+}
+span.detalle_cita {
+    border-radius: 3px;
+    cursor: pointer;
+    background: #DDD6BF;
+    color: #36143D;
+    padding: 8px 10px;
+    margin-right: 10px;
+}
+span.remove_cita {
+    border-radius: 3px;
+    padding: 8px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    background: #FF4D4D;
+    color: #fff;
+}
+.buscador{
+  margin:0 auto;
+  width:370px;
+  line-height:2;
+}
+#buscador{
+  width: 100%;
+  font-size: 20px;
+}
