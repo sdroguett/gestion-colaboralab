@@ -5,68 +5,105 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Gestiones;
 use App\Models\Contactos;
-use App\Models\Tipificaciones;
+use App\Models\User;
 use App\Models\Gestiones_Detalle;
 
 class ContactosController extends Controller{
 
 
 
-    public function actualizarGestion($contacto_id){
+    public function modificarGestion($contacto_id){
 
 
         $contacto=Contactos::find($contacto_id);
         $gestion=Gestiones::where('contactos_id','=',$contacto->id)->get();
         foreach($gestion as $g){
-            $tipificacion=Gestiones_Detalle::where('gestiones_id','=',$g->id)->first();
+            $tipificacion=Gestiones_Detalle::where('gestiones_id','=',$g->id)->get();
+
         }
+
+
         return view('menu.contacto_modificar')->with('contacto',$contacto)->with('tipificacion',$tipificacion)->with('gestion',$gestion);
+
 
     }
 
-    public function setGestionado(Request $request){
+    public function actualizarGestion(Request $request){
 
-        $user=auth()->user();
-        $contacto=Contactos::find($request->contactoId);
-        $gestion=Gestiones::where('contactos_id','=',$request->contactoId);
+       // $user=auth()->user();
+
+        $contactoId=$request->contactoId;
+        $user = User::where('id', auth()->user()->id)->first();
+        $contacto=Contactos::where('id', $contactoId)->first();
+        $gestion=Gestiones::where('contactos_id',$contactoId)->first();
 
         $contesta=$request->contesta;
-        $conoce=$request->conoce;
-        $interes=$request->interes;
         $dono=$request->dono;
         $cantidad=$request->cantidad;
-        $motivo_si=$request->motivo_si;
-        $motivo_no=$request->motivo_no;
-        $llamada=$request->dur_llamada;
         $comentarios=$request->comentarios;
-        $devolver_llamado=$request->devolver_llamado;
+        $devolverLlamado=$request->devolverLlamado;
 
 
 
-        $gestion->update([
-            'contactos_id'=>$contacto->id,
-            'sub_estado'=>3,
-            'usuario'=>$user->id
-        ]);
+        if($contesta==1 && $devolverLlamado==1){
+            $gestion->update([
+                'contactos_id'=>$contacto->id,
+                'sub_estado'=>4,
+                'usuario'=>$user->id
+            ]);
+        }
+        if($contesta==1 && $devolverLlamado!=1){
+            $gestion->update([
+                'contactos_id'=>$contacto->id,
+                'sub_estado'=>1,
+                'usuario'=>$user->id
+            ]);
+        }
+        if($contesta==2){
+            $gestion->update([
+                'contactos_id'=>$contacto->id,
+                'sub_estado'=>2,
+                'usuario'=>$user->id
+            ]);
+        }
 
 
 
-        Gestiones_Detalle::create([
+
+       $detalleGestion=Gestiones_Detalle::where('gestiones_id','=',$gestion->id);
+
+        if(!empty($detalleGestion)){
+
+        $detalleGestion->update([
             'contesta'=>$contesta,
-            'devolver_llamado'=>$devolver_llamado,
-            'conoce'=>$conoce,
-            'interes'=>$interes,
+            'interes'=>null,
             'dono'=>$dono,
             'cantidad'=>$cantidad,
-            'motivo_si'=> $motivo_si,
-            'motivo_no'=> $motivo_no,
-            'duracion_llamada'=>$llamada,
-            'comentarios'=>$comentarios,
-            'contacto_id'=>$contacto->contactoId,
-            'gestiones_id'=>$gestion->id
+            'motivo_si'=> null,
+            'motivo_no'=> null,
+            'duracion_llamada'=>0,
+            'comentarios'=>$comentarios
         ]);
 
-        return redirect()->route('menu.inicio');
+        }else{
+            $detalleGestion::create([
+                'contesta'=>$contesta,
+                'conoce'=>null,
+                'interes'=>null,
+                'dono'=>$dono,
+                'cantidad'=>$cantidad,
+                'motivo_si'=> null,
+                'motivo_no'=> null,
+                'duracion_llamada'=>0,
+                'comentarios'=>$comentarios,
+                'gestiones_id'=>$gestion->id
+            ]);
+        }
+
+        return redirect()->route('inicio');
+
+        //return $user;
+        //return $gestion;
 
     }
 

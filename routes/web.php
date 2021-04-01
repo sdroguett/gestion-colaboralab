@@ -21,14 +21,14 @@ Route::get('/', function () {
 Auth::routes();
 
 
-
+$router->get('import', 'ImportBaseController@import');
 //Controlador de inicio
 Route::get('/Inicio',  'InicioController@index')->name('inicio');
 
 //modifiacion de registros
-Route::get('/contacto/modificar/{contacto}', 'ContactosController@actualizarGestion')->name('contacto.modificar');
+Route::get('/contacto/modificar/{contacto}', 'ContactosController@modificarGestion')->name('contacto.modificar');
 //update de registro
-Route::patch('/Inicio', 'ContactosController@setGestionado')->name('contacto.gestionado');
+Route::patch('/Inicio', 'ContactosController@actualizarGestion')->name('contacto.gestionado');
 //Eliminar registro
 Route::get('/contacto/eliminar/{contacto}', 'ContactosController@eliminar')->name('contacto.eliminar');
 //lista de registros contactados

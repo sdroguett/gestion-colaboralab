@@ -10,7 +10,12 @@ class Gestiones extends Model
     use HasFactory;
 
 
+    protected $table='gestiones';
+    protected $primaryKey = 'id';
 
+    protected $fillable = [
+        'sub_estado', 'usuario', 'contactos_id'
+    ];
 
 
 

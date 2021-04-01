@@ -38,6 +38,7 @@
                 <table class="table table-striped table-bordered datatable">
                     <thead>
                         <tr>
+                            <th>Id Gestión</th>
                             <th>Rut</th>
                             <th>Nombre</th>
                             <th>Paterno</th>
@@ -52,6 +53,7 @@
                     <tbody>
                         @foreach($contactos as $contacto)
                         <tr>
+                            <td>{{$contacto->gestionId}}</td>
                             <td>{{$contacto->rut}}</td>
                             <td>{{$contacto->nombre}}</td>
                             <td>{{$contacto->apellido_paterno}}</td>
@@ -62,12 +64,12 @@
                             <td>{{$contacto->sub_estado}}</td>
 
                             <td style="text-align:center">
-                               <a class="btn btn-success" href="{{ route('contacto.modificar',[$contacto->id])}}">
+                                <a class="btn btn-success" href="{{ route('contacto.modificar',[$contacto->id])}}">
                                     <svg class="c-icon">
                                         <use xlink:href="/assets/icons/coreui/free-symbol-defs.svg#cui-pencil"></use>
                                     </svg>
                                 </a>
-                                </td>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
