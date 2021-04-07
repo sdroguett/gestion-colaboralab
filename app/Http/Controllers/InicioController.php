@@ -74,6 +74,7 @@ class InicioController extends Controller
         $user = $user = Auth::user();
 
         $contactos = Gestiones::select(
+            'gestiones.id as gestionId',
             'contactos.id',
             'contactos.nombre',
             'contactos.apellido_paterno',
@@ -90,6 +91,8 @@ class InicioController extends Controller
             ->where('gestiones.usuario', '=', $user->id)
             ->take(300)->get();
 
+
+
         return view('menu.contactados')->with('user', $user)->with('contactos', $contactos);
     }
 
@@ -99,6 +102,7 @@ class InicioController extends Controller
         $user = $user = Auth::user();
 
         $contactos = Gestiones::select(
+            'gestiones.id as gestionId',
             'contactos.id',
             'contactos.nombre',
             'contactos.apellido_paterno',
@@ -124,6 +128,7 @@ class InicioController extends Controller
         $user = $user = Auth::user();
 
         $contactos = Gestiones::select(
+            'gestiones.id as gestionId',
             'contactos.id',
             'contactos.nombre',
             'contactos.apellido_paterno',

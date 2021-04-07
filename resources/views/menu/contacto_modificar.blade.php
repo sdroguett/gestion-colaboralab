@@ -123,7 +123,7 @@
                         <div class="form-group row">
                             <label class="col-md-1 col-form-label" for="text-input">Comentarios</label>
                             <div class="col-md-6">
-                                <textarea class="form-control" id="comentarios" type="text" name="comentarios" value="" col="10"></textarea>
+                                <textarea class="form-control" id="comentarios" type="text" name="comentarios" value="" col="10">{{$detalle->comentarios}}</textarea>
                             </div>
                         </div>
 

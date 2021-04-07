@@ -26,7 +26,7 @@ $router->get('import', 'ImportBaseController@import');
 Route::get('/Inicio',  'InicioController@index')->name('inicio');
 
 //modifiacion de registros
-Route::get('/contacto/modificar/{contacto}', 'ContactosController@modificarGestion')->name('contacto.modificar');
+Route::get('/contacto/modificar/{id}/{gestionId}', 'ContactosController@modificarGestion')->name('contacto.modificar');
 //update de registro
 Route::patch('/Inicio', 'ContactosController@actualizarGestion')->name('contacto.gestionado');
 //Eliminar registro

@@ -8,103 +8,110 @@ use App\Models\Contactos;
 use App\Models\User;
 use App\Models\Gestiones_Detalle;
 
-class ContactosController extends Controller{
+class ContactosController extends Controller
+{
 
 
 
-    public function modificarGestion($contacto_id){
+    public function modificarGestion($contactoId, $gestionId)
+    {
 
 
-        $contacto=Contactos::find($contacto_id);
-        $gestion=Gestiones::where('contactos_id','=',$contacto->id)->get();
-        foreach($gestion as $g){
-            $tipificacion=Gestiones_Detalle::where('gestiones_id','=',$g->id)->get();
 
+        $contacto = Contactos::find($contactoId);
+        $gestion = Gestiones::where('id', $gestionId)->first();
+        $detalle = Gestiones_Detalle::where('gestiones_id', $gestionId)->first();
+
+
+
+        if ($detalle->count() > 0) {
+
+            return view('menu.contacto_modificar')->with('contacto', $contacto)->with('gestion', $gestion)->with('detalle', $detalle);
+        } else {
+
+
+            return view('menu.contacto_modificar_nuevo')->with('contacto', $contacto)->with('gestion', $gestion);
         }
-
-
-        return view('menu.contacto_modificar')->with('contacto',$contacto)->with('tipificacion',$tipificacion)->with('gestion',$gestion);
-
-
     }
 
-    public function actualizarGestion(Request $request){
+    public function actualizarGestion(Request $request)
+    {
 
-       // $user=auth()->user();
+        // $user=auth()->user();
 
-        $contactoId=$request->contactoId;
+        $contactoId = $request->contactoId;
         $user = User::where('id', auth()->user()->id)->first();
-        $contacto=Contactos::where('id', $contactoId)->first();
-        $gestion=Gestiones::where('contactos_id',$contactoId)->first();
-
-        $contesta=$request->contesta;
-        $dono=$request->dono;
-        $cantidad=$request->cantidad;
-        $comentarios=$request->comentarios;
-        $devolverLlamado=$request->devolverLlamado;
+        $contacto = Contactos::where('id', $contactoId)->first();
+        $gestion = Gestiones::find($request->gestionId);
 
 
 
-        if($contesta==1 && $devolverLlamado==1){
+        $contesta = $request->contesta;
+        $devolverLlamado = $request->devolverLlamado;
+
+
+
+        if ($contesta == 1 && $devolverLlamado == 1) {
             $gestion->update([
-                'contactos_id'=>$contacto->id,
-                'sub_estado'=>4,
-                'usuario'=>$user->id
+                'contactos_id' => $contacto->id,
+                'sub_estado' => 4,
+                'usuario' => $user->id
             ]);
         }
-        if($contesta==1 && $devolverLlamado!=1){
+        if ($contesta == 1 && $devolverLlamado != 1) {
             $gestion->update([
-                'contactos_id'=>$contacto->id,
-                'sub_estado'=>1,
-                'usuario'=>$user->id
+                'contactos_id' => $contacto->id,
+                'sub_estado' => 1,
+                'usuario' => $user->id
             ]);
         }
-        if($contesta==2){
+        if ($contesta == 2) {
             $gestion->update([
-                'contactos_id'=>$contacto->id,
-                'sub_estado'=>2,
-                'usuario'=>$user->id
+                'contactos_id' => $contacto->id,
+                'sub_estado' => 2,
+                'usuario' => $user->id
             ]);
         }
 
 
 
 
-       $detalleGestion=Gestiones_Detalle::where('gestiones_id','=',$gestion->id);
+        $detalleGestion = Gestiones_Detalle::where('gestiones_id',$request->gestionId);
 
-        if(!empty($detalleGestion)){
+        if ($detalleGestion->count()>0) {
 
-        $detalleGestion->update([
-            'contesta'=>$contesta,
-            'interes'=>null,
-            'dono'=>$dono,
-            'cantidad'=>$cantidad,
-            'motivo_si'=> null,
-            'motivo_no'=> null,
-            'duracion_llamada'=>0,
-            'comentarios'=>$comentarios
-        ]);
-
-        }else{
-            $detalleGestion::create([
-                'contesta'=>$contesta,
-                'conoce'=>null,
-                'interes'=>null,
-                'dono'=>$dono,
-                'cantidad'=>$cantidad,
-                'motivo_si'=> null,
-                'motivo_no'=> null,
-                'duracion_llamada'=>0,
-                'comentarios'=>$comentarios,
-                'gestiones_id'=>$gestion->id
+            $detalleGestion->update([
+                'contesta' => $request->contesta,
+                'conoce' => null,
+                'interes' => null,
+                'dono' => $request->dono,
+                'cantidad' => $request->cantidad,
+                'motivo_si' => null,
+                'motivo_no' => null,
+                'duracion_llamada' => 0,
+                'comentarios' => $request->comentarios,
+            ]);
+        } else {
+            $detalleGestion=Gestiones_Detalle::create([
+                'contesta' => $request->contesta,
+                'conoce' => null,
+                'interes' => null,
+                'dono' => $request->dono,
+                'cantidad' => $request->cantidad,
+                'motivo_si' => null,
+                'motivo_no' => null,
+                'duracion_llamada' => 0,
+                'comentarios' => $request->comentarios,
+                'gestiones_id' => $request->gestionId
             ]);
         }
 
+
+        //return $detalleGestion;
         return redirect()->route('inicio');
 
-        //return $user;
+
         //return $gestion;
 
     }
-
 }

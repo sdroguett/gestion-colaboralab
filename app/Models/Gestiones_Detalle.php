@@ -13,6 +13,6 @@ class Gestiones_Detalle extends Model
 
     protected $fillable = [
         'contesta', 'conoce', 'interes','dono', 'cantidad',
-        'motivo', 'duracion_llamada' ,'comentarios'
+        'motivo', 'duracion_llamada' ,'comentarios','gestiones_id'
     ];
 }
