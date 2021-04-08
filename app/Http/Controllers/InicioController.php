@@ -25,6 +25,7 @@ class InicioController extends Controller
         if ($user->hasRole('admin')) {
 
             $contactos = Gestiones::select(
+                'gestiones.id as gestionId',
                 'contactos.id',
                 'contactos.nombre',
                 'contactos.apellido_paterno',
