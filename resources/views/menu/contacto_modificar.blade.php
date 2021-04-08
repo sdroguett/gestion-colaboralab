@@ -16,6 +16,9 @@
                                 <input class="form-control" id="contactoId" type="hidden" name="contactoId" value="{{$contacto->id}}">
                             </div>
                             <div class="form-group row">
+                                <input class="form-control" id="gestionId" type="hidden" name="gestionId" value="{{$gestion->id}}">
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-md-2 col-form-label" for="text-input">Nombre</label>
                                 <div class="col-md-3">
                                     <input class="form-control" id="nombre" type="text" name="nombre" value="{{$contacto->nombre}}">

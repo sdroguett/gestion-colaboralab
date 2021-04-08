@@ -18,15 +18,13 @@
                 <table class="table table-striped table-bordered datatable">
                     <thead>
                         <tr>
-                            <th>Id Gestión</th>
-                            <th>Rut</th>
+                        <th>Id gestion</th>
                             <th>Nombre</th>
                             <th>Paterno</th>
                             <th>Materno</th>
-                            <th>Edad</th>
+                            <th>Comentarios</th>
                             <th>Base</th>
                             <th>Estado</th>
-                            <th>Sub Estado</th>
                             <th>Ver</th>
                         </tr>
                     </thead>
@@ -34,14 +32,16 @@
                         @foreach($contactos as $contacto)
                         <tr>
                             <td>{{$contacto->gestionId}}</td>
-                            <td>{{$contacto->rut}}</td>
                             <td>{{$contacto->nombre}}</td>
-                            <td>{{$contacto->apellido_paterno}}</td>
-                            <td>{{$contacto->apellido_materno}}</td>
-                            <td>{{$contacto->edad}}</td>
+                            <td>{{$contacto->paterno}}</td>
+                            <td>{{$contacto->materno}}</td>
+                            <td><a>{{substr($contacto->comentarios,0,20)}}...</a>
+                                <div class="box">
+                                    {{$contacto->comentarios}}
+                                </div>
+                            </td>
                             <td>{{$contacto->base}}</td>
-                            <td>{{$contacto->estado}}</td>
-                            <td>{{$contacto->sub_estado}}</td>
+                            <td>{{$contacto->descripcion}}</td>
 
 
                             <td style="text-align:center">

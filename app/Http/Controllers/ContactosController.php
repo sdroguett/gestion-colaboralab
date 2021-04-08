@@ -22,16 +22,18 @@ class ContactosController extends Controller
         $gestion = Gestiones::where('id', $gestionId)->first();
         $detalle = Gestiones_Detalle::where('gestiones_id', $gestionId)->first();
 
+        //return $detalle;
 
 
-        if ($detalle->count() > 0) {
+        if (!empty($detalle)) {
 
-            return view('menu.contacto_modificar')->with('contacto', $contacto)->with('gestion', $gestion)->with('detalle', $detalle);
-        } else {
+                return view('menu.contacto_modificar')->with('contacto', $contacto)->with('gestion', $gestion)->with('detalle', $detalle);
+            } else {
 
 
-            return view('menu.contacto_modificar_nuevo')->with('contacto', $contacto)->with('gestion', $gestion);
-        }
+                return view('menu.contacto_modificar_nuevo')->with('contacto', $contacto)->with('gestion', $gestion);
+            }
+
     }
 
     public function actualizarGestion(Request $request)
@@ -41,7 +43,6 @@ class ContactosController extends Controller
 
         $contactoId = $request->contactoId;
         $user = User::where('id', auth()->user()->id)->first();
-        $contacto = Contactos::where('id', $contactoId)->first();
         $gestion = Gestiones::find($request->gestionId);
 
 
@@ -53,21 +54,21 @@ class ContactosController extends Controller
 
         if ($contesta == 1 && $devolverLlamado == 1) {
             $gestion->update([
-                'contactos_id' => $contacto->id,
+                'contactos_id' => $contactoId,
                 'sub_estado' => 4,
                 'usuario' => $user->id
             ]);
         }
-        if ($contesta == 1 && $devolverLlamado != 1) {
+        if ($contesta == 1 && $devolverLlamado != 1 || is_null($devolverLlamado)) {
             $gestion->update([
-                'contactos_id' => $contacto->id,
+                'contactos_id' =>  $contactoId,
                 'sub_estado' => 1,
                 'usuario' => $user->id
             ]);
         }
         if ($contesta == 2) {
             $gestion->update([
-                'contactos_id' => $contacto->id,
+                'contactos_id' =>  $contactoId,
                 'sub_estado' => 2,
                 'usuario' => $user->id
             ]);
@@ -76,9 +77,9 @@ class ContactosController extends Controller
 
 
 
-        $detalleGestion = Gestiones_Detalle::where('gestiones_id',$request->gestionId);
+        $detalleGestion = Gestiones_Detalle::where('gestiones_id', $request->gestionId);
 
-        if ($detalleGestion->count()>0) {
+        if ($detalleGestion->count() > 0) {
 
             $detalleGestion->update([
                 'contesta' => $request->contesta,
@@ -92,7 +93,7 @@ class ContactosController extends Controller
                 'comentarios' => $request->comentarios,
             ]);
         } else {
-            $detalleGestion=Gestiones_Detalle::create([
+            $detalleGestion = Gestiones_Detalle::create([
                 'contesta' => $request->contesta,
                 'conoce' => null,
                 'interes' => null,
